@@ -1,2 +1,10 @@
+[project]
+name = "project_name"
+version = "0.0.0"
+
 [project.scripts]
-my-app = "project_name.src.app.main:main_function"
+project-app = "project_name.src.app.main:main_function"
+# project-app2 = "project_name2.src.app.main:main_function"
+
+# [tool.setuptools]
+# packages = ["project-app", "project-app2"]
