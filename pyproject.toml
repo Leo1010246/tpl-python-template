@@ -1,0 +1,2 @@
+[project.scripts]
+my-app = "project_name.src.app.main:main_function"
