@@ -6,6 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "project_name"
 version = "0.0.0"
 description = "Python template description"
+# dependencies = [
+#     "example1>=1.11.0",
+#     "example2",
+# ]
 
 [project.scripts]
 project-app = "project_name.src.app.main:main_function"
