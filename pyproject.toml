@@ -6,6 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "project_name"
 version = "0.0.0"
 license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
 description = "Python template description"
 # dependencies = [
 #     "example1>=1.11.0",
@@ -13,11 +15,12 @@ description = "Python template description"
 # ]
 
 [project.scripts]
-project-app = "project_name.src.app.main:main_function"
-# project-app2 = "project_name2.src.app.main:main_function"
+subproject-1-app = "subproject_1_name.src.app.main:main_function"
+# subproject-2-app = "subproject_2_name.src.app.main:main_function"
 
-# [tool.setuptools]
-# packages = ["project-app", "project-app2"]
+[tool.setuptools]
+packages = ["subproject_1_name"]
+# packages = ["subproject_1_name", "subproject_2_name"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
