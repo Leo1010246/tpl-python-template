@@ -4,7 +4,7 @@ def setup_global_env():
 def start_system():
     setup_global_env()
     
-    from subproject_1_name.src.app.main import main_function as subproject_1_name_main_function
+    from .subproject_1_name.src.app.main import main_function as subproject_1_name_main_function
   
     subproject_1_name_main_function()
 
