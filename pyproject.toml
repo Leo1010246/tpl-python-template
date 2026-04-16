@@ -23,4 +23,4 @@ packages = ["subproject_1_name"]
 # packages = ["subproject_1_name", "subproject_2_name"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["test"]
