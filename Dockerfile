@@ -1,11 +1,11 @@
 # base stage
 FROM python:3.11-slim AS base
 
+ENV PULSE_SERVER=unix:/run/user/1000/pulse/native
+
 ARG USERNAME=user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-
-ENV PULSE_SERVER=unix:/run/user/1000/pulse/native
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
@@ -55,7 +55,7 @@ COPY --chown=$USERNAME:$USER_GID pyproject.toml README.md ./
 RUN pip-compile --extra dev -o requirements.txt pyproject.toml
 RUN pip install -r requirements.txt
 
-RUN rm ./*
+RUN find . -maxdepth 1 ! -name '.' ! -name '..' -delete
 
 CMD ["/bin/bash"]
 
