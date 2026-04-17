@@ -7,6 +7,10 @@ ARG USER_GID=$USER_UID
 
 ENV PULSE_SERVER=unix:/run/user/1000/pulse/native
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
@@ -20,7 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2 \
     libasound2-plugins \
     alsa-utils \
-    sudo \
     && rm -rf /var/lib/apt/lists/*
     
 RUN pip install --no-cache-dir pip-tools
