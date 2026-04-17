@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    image: project_name:dev
+    container_name: project_name-dev
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /run/user/${UID:-1000}/pulse:/run/user/1000/pulse
+      - .:/app
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+  app:
+    build:
+      context: .
+      target: app
+    image: project_name:v0.0.0
+    container_name: project_name-app
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /run/user/1000/pulse:/run/user/1000/pulse
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+    network_mode: "host"
