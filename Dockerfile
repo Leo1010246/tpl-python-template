@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     alsa-utils \
     && rm -rf /var/lib/apt/lists/*
     
-RUN pip install --no-cache-dir pip-tools
+RUN python3 -m pip install --no-cache-dir pip-tools
 
 WORKDIR /app
 
@@ -53,7 +53,7 @@ USER $USERNAME
 COPY --chown=$USERNAME:$USER_GID pyproject.toml README.md ./
 
 RUN pip-compile --extra dev -o requirements.txt pyproject.toml
-RUN pip install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 RUN find . -maxdepth 1 ! -name '.' ! -name '..' -delete
 
@@ -67,6 +67,6 @@ USER $USERNAME
 COPY --chown=$USERNAME:$USER_GID . .
 
 RUN pip-compile -o requirements.txt pyproject.toml
-RUN pip install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 ENTRYPOINT ["python", "."]
