@@ -10,9 +10,14 @@ readme = "README.md"
 requires-python = ">=3.8"
 description = "Python template description"
 # dependencies = [
-#     "example1>=1.11.0",
-#     "example2",
+#     "example1==1.11.0",
+#     "example2==1.0.0",
 # ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest >= 7.0.0",
+]
 
 [project.scripts]
 subproject-1-app = "subproject_1_name.src.app.main:main_function"
