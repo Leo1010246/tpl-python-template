@@ -4,40 +4,20 @@ services:
     
     environment:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
       
     volumes:
       - /mnt/wslg:/mnt/wslg
 
     devices:
       - /dev/dxg:/dev/dxg
-      
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu, graphics, compute, utility]
     
   app:
 
     environment:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
       
     volumes:
       - /mnt/wslg:/mnt/wslg
 
     devices:
       - /dev/dxg:/dev/dxg
-      
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu, graphics, compute, utility]
