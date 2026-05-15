@@ -4,12 +4,15 @@ services:
     
     environment:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
       
     volumes:
       - /mnt/wslg:/mnt/wslg
+      - /usr/lib/wsl:/usr/lib/wsl
 
     devices:
       - /dev/dxg:/dev/dxg
+      - /dev/dri:/dev/dri
     
   app:
 
