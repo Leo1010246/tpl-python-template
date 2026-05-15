@@ -1,28 +1,18 @@
 services:
 
   dev:
-    build:
-      context: .
-      target: dev
-    image: project_name:dev
-    container_name: project_name-dev
     
     environment:
-      - DISPLAY=${DISPLAY:-:0}
-      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
-      - XDG_RUNTIME_DIR=/run/user/1000
-      - PULSE_SERVER=unix:/run/user/1000/pulse/native
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-      
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /run/user/${UID:-1000}:/run/user/1000
-      - /mnt/wslg:/mnt/wslg
-      - .:/app
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
       
     devices:
       - /dev/dri:/dev/dri
+
+    group_add:
+      - video
+      - render
       
     deploy:
       resources:
@@ -31,25 +21,25 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu, graphics, compute, utility]
-              
-    network_mode: "host"
-    stdin_open: true
-    tty: true
-    command: /bin/bash
     
   app:
-    build:
-      context: .
-      target: app
-    image: project_name:v0.0.0
-    container_name: project_name-app
     
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /run/user/1000/pulse:/run/user/1000/pulse
-      
     environment:
-      - DISPLAY=${DISPLAY}
-      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
       
-    network_mode: "host"
+    devices:
+      - /dev/dri:/dev/dri
+
+    group_add:
+      - video
+      - render
+      
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, graphics, compute, utility]
