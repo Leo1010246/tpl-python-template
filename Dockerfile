@@ -11,24 +11,36 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
     && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+RUN if getent group $USER_GID; then \
+        groupmod -n $USERNAME $(getent group $USER_GID | cut -d: -f1);\
+    else \
+        groupadd --gid $USER_GID $USERNAME; \
+    fi \
+    && if getent passwd $USER_UID; then \
+        usermod -l $USERNAME -g $USER_GID -m -d /home/$USERNAME $(getent passwd $USER_UID | cut -d: -f1); \
+    else \
+        useradd --uid $USER_UID --gid $USER_GID -m $USERNAME; \
+    fi \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
     
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglx-mesa0 \
     libgl1-mesa-dri \
-    libgl1-mesa-glx \
     libglu1-mesa \
     pulseaudio \
+    libpulse0 \
     libasound2 \
     libasound2-plugins \
     alsa-utils \
     && rm -rf /var/lib/apt/lists/*
     
-RUN python3 -m pip install --no-cache-dir pip-tools
+RUN python3 -m pip install --no-cache-dir pip-tools --break-system-packages
 
 WORKDIR /app
+
+RUN chown $USERNAME:$USER_GID /app
 
 # dev stage
 FROM base AS dev
@@ -52,8 +64,8 @@ USER $USERNAME
 
 COPY --chown=$USERNAME:$USER_GID pyproject.toml README.md ./
 
-RUN pip-compile --extra dev -o requirements.txt pyproject.toml
-RUN python3 -m pip install -r requirements.txt
+RUN python3 -m piptools compile --extra dev --strip-extras -o requirements.txt pyproject.toml
+RUN python3 -m pip install --user --break-system-packages -r requirements.txt
 
 RUN find . -maxdepth 1 ! -name '.' ! -name '..' -delete
 
@@ -66,7 +78,11 @@ USER $USERNAME
 
 COPY --chown=$USERNAME:$USER_GID . .
 
-RUN pip-compile -o requirements.txt pyproject.toml
-RUN python3 -m pip install -r requirements.txt
+RUN python3 -m piptools compile --extra dev --strip-extras -o requirements.txt pyproject.toml
+RUN python3 -m pip install --user --break-system-packages -r requirements.txt
+
+RUN pip install -e .
 
 ENTRYPOINT ["python", "."]
+
+ENTRYPOINT ["python", "-m", $(sed -n '/\[project\]/,/name/s/^name *= *"\(.*\)"/\1/p' pyproject.toml | head -n 1)]
