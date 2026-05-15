@@ -6,7 +6,6 @@ services:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
       - LD_LIBRARY_PATH=/usr/lib/wsl/lib
       - LIBGL_ALWAYS_SOFTWARE=0
-      - GALLIUM_DRIVER=d3d12
       
     volumes:
       - /mnt/wslg:/mnt/wslg
@@ -21,7 +20,6 @@ services:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
       - LD_LIBRARY_PATH=/usr/lib/wsl/lib
       - LIBGL_ALWAYS_SOFTWARE=0
-      - GALLIUM_DRIVER=d3d12
       
     volumes:
       - /mnt/wslg:/mnt/wslg
