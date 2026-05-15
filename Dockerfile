@@ -29,6 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglx-mesa0 \
     libgl1-mesa-dri \
     libglu1-mesa \
+    libvulkan1 \
+    mesa-vulkan-drivers \
     pulseaudio \
     libpulse0 \
     libasound2 \
@@ -56,6 +58,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     htop \
     x11-apps \
     mesa-utils \
+    vulkan-tools \
     pulseaudio-utils \
     freeglut3-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -83,4 +86,6 @@ RUN python3 -m pip install --user --break-system-packages -r requirements.txt
 
 RUN pip install -e .
 
-ENTRYPOINT ["python", "-m", $(sed -n '/\[project\]/,/name/s/^name *= *"\(.*\)"/\1/p' pyproject.toml | head -n 1)]
+ENV PATH="/home/user/.local/bin:${PATH}"
+
+ENTRYPOINT ["sh", "-c", "$PKG_SCRIPT"]
