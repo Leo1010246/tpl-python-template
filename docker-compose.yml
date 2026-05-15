@@ -33,6 +33,7 @@ services:
       - DISPLAY=${DISPLAY:-:0}
       - XDG_RUNTIME_DIR=/run/user/1000
       - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - PKG_SCRIPT=subproject-1-app
 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
