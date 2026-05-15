@@ -12,7 +12,6 @@ services:
 
     devices:
       - /dev/dxg:/dev/dxg
-      - /dev/dri:/dev/dri
     
   app:
 
@@ -26,4 +25,3 @@ services:
 
     devices:
       - /dev/dxg:/dev/dxg
-      - /dev/dri:/dev/dri
