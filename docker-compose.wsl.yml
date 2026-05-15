@@ -4,7 +4,7 @@ services:
     
     environment:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
-      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib:${LD_LIBRARY_PATH}
       - LIBGL_ALWAYS_SOFTWARE=0
       
     volumes:
@@ -18,7 +18,7 @@ services:
 
     environment:
       - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
-      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib:${LD_LIBRARY_PATH}
       - LIBGL_ALWAYS_SOFTWARE=0
       
     volumes:
